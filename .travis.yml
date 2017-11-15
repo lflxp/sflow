@@ -1,0 +1,19 @@
+language: go
+
+
+go:
+  - 1.9.x
+
+before_script:
+  - go get -u -t -v github.com/lflxp/sflow/...
+  - go get github.com/google/gopacket
+
+script:
+ - go test -v ./...
+ - goveralls -service=travis-ci
+
+notifications:
+  email:
+    recipients: 382023823@qq.com
+    on_success: change
+    on_failure: always
