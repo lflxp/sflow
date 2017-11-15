@@ -211,22 +211,23 @@ func NewFlowSamples() *FlowSamples {
 	return &FlowSamples{}
 }
 
-func (this *FlowSamples) SendUdp(result,CounterHost,Host string, counter bool) {
+func (this *FlowSamples) SendUdp(result,CounterHost,Host string, counter bool) error {
 	if counter {
 		conn, err := net.Dial("udp", CounterHost)
 		defer conn.Close()
 		if err != nil {
-			panic(err)
+			return err
 		}
 		conn.Write([]byte(result))
 	} else {
 		conn, err := net.Dial("udp", Host)
 		defer conn.Close()
 		if err != nil {
-			panic(err)
+			return err
 		}
 		conn.Write([]byte(result))
 	}
+	return nil
 }
 
 func (this *FlowSamples) InitFlowSampleData(p layers.SFlowFlowSample) error {
@@ -354,12 +355,9 @@ func (this *FlowSamples) ParseLayers(p gopacket.Packet) error {
 		udp, _ := udpLayer.(*layers.UDP)
 		this.SFlowRawPacketFlowRecord.Header.SrcPort = udp.SrcPort.String()
 		this.SFlowRawPacketFlowRecord.Header.DstPort = udp.DstPort.String()
-	} else {
-		return errors.New("LayerTypeUDP error")
 	}
 
 	//ICMP
-	//TCP
 	icmplayer := p.Layer(layers.LayerTypeICMPv4)
 	if icmplayer != nil {
 		icmp,_ := icmplayer.(*layers.ICMPv4)

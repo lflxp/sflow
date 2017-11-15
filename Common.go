@@ -44,7 +44,7 @@ func (this *Data) Init(payload []byte) error {
 	pp := gopacket.NewPacket(payload, layers.LayerTypeSFlow, gopacket.Default)
 	if pp.ErrorLayer() != nil {
 		//fmt.Println(pp.Data())
-		this.decodeDataFromBytes(pp.Data())
+		this.DecodeDataFromBytes(pp.Data())
 	}
 	if got, ok := pp.ApplicationLayer().(*layers.SFlowDatagram); ok {
 		this.DatagramVersion = got.DatagramVersion
@@ -57,7 +57,7 @@ func (this *Data) Init(payload []byte) error {
 	return nil
 }
 
-func (this *Data) decodeDataFromBytes(data []byte) error {
+func (this *Data) DecodeDataFromBytes(data []byte) error {
 	var agentAddressType layers.SFlowIPType
 
 	data ,this.DatagramVersion = data[4:],binary.BigEndian.Uint32(data[:4])

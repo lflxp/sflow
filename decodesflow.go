@@ -1,12 +1,12 @@
 package sflow
 
 import (
-	//"fmt"
-	//"encoding/json"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 )
 
+//decode sflow V5 struct
+//contains sample and counter info
 func DecodeSflow(tuple *Datagram, payload []byte) ([]*FlowSamples,[]*SFlowCounterSample, error) {
 	samples := []*FlowSamples{}
 	counters := []*SFlowCounterSample{}
@@ -25,12 +25,6 @@ func DecodeSflow(tuple *Datagram, payload []byte) ([]*FlowSamples,[]*SFlowCounte
 				Header.Type = "sample"
 				tmp.Data = Header
 				tmp.InitFlowSampleData(y)
-				//b, err := json.Marshal(tmp)
-				//if err != nil {
-				//	fmt.Println(err.Error())
-				//}
-				//
-				//samples = append(samples, string(b))
 				samples = append(samples,tmp)
 			}
 		}
@@ -43,18 +37,13 @@ func DecodeSflow(tuple *Datagram, payload []byte) ([]*FlowSamples,[]*SFlowCounte
 				tmp.InitCounterSample(y)
 			}
 
-			//b, err := json.Marshal(tmp)
-			//if err != nil {
-			//	fmt.Println(err.Error())
-			//}
-			//
-			//counters = append(counters, string(b))
 			counters = append(counters,tmp)
 		}
 	}
 	return samples,counters, nil
 }
 
+//only decode and return sample
 func DecodeSample(tuple *Datagram, payload []byte) ([]*FlowSamples, error) {
 	samples := []*FlowSamples{}
 	Header := NewData()
@@ -72,12 +61,6 @@ func DecodeSample(tuple *Datagram, payload []byte) ([]*FlowSamples, error) {
 				Header.Type = "sample"
 				tmp.Data = Header
 				tmp.InitFlowSampleData(y)
-				//b, err := json.Marshal(tmp)
-				//if err != nil {
-				//	fmt.Println(err.Error())
-				//}
-				//
-				//samples = append(samples, string(b))
 				samples = append(samples,tmp)
 			}
 		}

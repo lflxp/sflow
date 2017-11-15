@@ -1,10 +1,28 @@
-# sflow
-Decode sflow struct like this
+# Info
+Parsing sFlow for packetbeat plug-ins
 
 This is struct to decode sflow 5 layers and datagram info together  
-Borrowed part of gopacket's sFlow data structure
+Fork on part of gopacket's sFlow data structure
 
 
-# Useage
+# Sample
 
-DecodeSflow(tuple *common.IPPortTuple, payload []byte) ([]string, error) 
+Only decoder five layers of sflow sample
+
+```
+SFlowRawPacketFlowRecord
+SFlowExtendedSwitchFlowRecord
+SFlowExtendedRouterFlowRecord
+SFlowExtendedGatewayFlowRecord
+SFlowExtendedUserFlow
+```
+
+# Counter
+
+decoder all of layers
+
+```
+SFlowGenericInterfaceCounters
+SFlowEthernetCounters
+SFlowProcessorCounters
+```
