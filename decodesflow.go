@@ -63,7 +63,7 @@ func DecodeSample(tuple *Datagram, payload []byte) ([]*FlowSamples, error) {
 
 	pp := gopacket.NewPacket(payload, layers.LayerTypeSFlow, gopacket.Default)
 	if pp.ErrorLayer() != nil {
-		return nil,nil, pp.ErrorLayer().Error()
+		return nil, pp.ErrorLayer().Error()
 	}
 	if got, ok := pp.ApplicationLayer().(*layers.SFlowDatagram); ok {
 		if len(got.FlowSamples) > 0 {
