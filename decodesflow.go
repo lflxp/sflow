@@ -7,9 +7,9 @@ import (
 
 //decode sflow V5 struct
 //contains sample and counter info
-func DecodeSflow(tuple *Datagram, payload []byte) ([]*FlowSamples,[]*SFlowCounterSample, error) {
-	samples := []*FlowSamples{}
-	counters := []*SFlowCounterSample{}
+func DecodeSflow(tuple *Datagram, payload []byte) (*[]FlowSamples,*[]SFlowCounterSample, error) {
+	samples := []FlowSamples{}
+	counters := []SFlowCounterSample{}
 	Header := NewData()
 	Header.InitDatagram(tuple)
 	err := Header.Init(payload)
@@ -28,7 +28,7 @@ func DecodeSflow(tuple *Datagram, payload []byte) ([]*FlowSamples,[]*SFlowCounte
 				Header.Type = "sample"
 				tmp.Data = Header
 				tmp.InitFlowSampleData(y)
-				samples = append(samples,tmp)
+				samples = append(samples,*tmp)
 			}
 		}
 
@@ -40,10 +40,10 @@ func DecodeSflow(tuple *Datagram, payload []byte) ([]*FlowSamples,[]*SFlowCounte
 				tmp.InitCounterSample(y)
 			}
 
-			counters = append(counters,tmp)
+			counters = append(counters,*tmp)
 		}
 	}
-	return samples,counters, nil
+	return &samples,&counters, nil
 }
 
 //only decode and return sample
