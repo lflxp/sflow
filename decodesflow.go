@@ -12,7 +12,10 @@ func DecodeSflow(tuple *Datagram, payload []byte) ([]*FlowSamples,[]*SFlowCounte
 	counters := []*SFlowCounterSample{}
 	Header := NewData()
 	Header.InitDatagram(tuple)
-	Header.Init(payload)
+	err := Header.Init(payload)
+	if err != nil {
+		return nil,nil,err
+	}
 
 	pp := gopacket.NewPacket(payload, layers.LayerTypeSFlow, gopacket.Default)
 	if pp.ErrorLayer() != nil {
@@ -48,7 +51,10 @@ func DecodeSample(tuple *Datagram, payload []byte) ([]*FlowSamples, error) {
 	samples := []*FlowSamples{}
 	Header := NewData()
 	Header.InitDatagram(tuple)
-	Header.Init(payload)
+	err := Header.Init(payload)
+	if err != nil {
+		return nil,err
+	}
 
 	pp := gopacket.NewPacket(payload, layers.LayerTypeSFlow, gopacket.Default)
 	if pp.ErrorLayer() != nil {

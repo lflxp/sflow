@@ -44,7 +44,8 @@ func (this *Data) Init(payload []byte) error {
 	pp := gopacket.NewPacket(payload, layers.LayerTypeSFlow, gopacket.Default)
 	if pp.ErrorLayer() != nil {
 		//fmt.Println(pp.Data())
-		this.DecodeDataFromBytes(pp.Data())
+		//this.DecodeDataFromBytes(pp.Data())
+		return pp.ErrorLayer().Error()
 	}
 	if got, ok := pp.ApplicationLayer().(*layers.SFlowDatagram); ok {
 		this.DatagramVersion = got.DatagramVersion
