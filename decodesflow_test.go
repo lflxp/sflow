@@ -93,13 +93,13 @@ func TestDecodeSflow(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if len(sample) > 0 {
-		for n,sa := range sample {
+	if len(*sample) > 0 {
+		for n,sa := range *sample {
 			t.Log(n,"Sample SFlowRawPacketFlowRecord.Header.DstIP",sa.SFlowRawPacketFlowRecord.Header.DstIP)
 		}
 	}
-	if len(counter) > 0 {
-		for m,co := range counter {
+	if len(*counter) > 0 {
+		for m,co := range *counter {
 			t.Log(m,"Counter SFlowGenericInterfaceCounters.IfIndex",co.SFlowGenericInterfaceCounters.IfIndex)
 		}
 	}
